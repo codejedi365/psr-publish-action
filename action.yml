@@ -35,5 +35,16 @@ inputs:
     required: false
 
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
+  steps:
+    - run: pipx install python-semantic-release
+      shell: bash
+
+    - run: action.sh
+      id: semrel
+      shell: bash
+      env:
+        DIRECTORY: ${{ inputs.directory }}
+        GH_TOKEN: ${{ inputs.github_token }}
+        ROOT_OPTIONS: ${{ inputs.root_options }}
+        TAG: ${{ inputs.tag }}
